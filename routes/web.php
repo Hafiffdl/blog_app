@@ -8,9 +8,21 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\PostController as UserPostController;
+use App\Http\Controllers\KiController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/posts/{post}', [HomeController::class, 'show'])->name('posts.show');
+
+Route::get('/kekayaan-intelektual', [KiController::class, 'index'])->name('ki.index');
+Route::get('/ki/create/{id}', [KiController::class, 'create'])->name('ki.create');
+Route::post('/ki/store', [KiController::class, 'store'])->name('ki.store')->middleware('auth');
+Route::get('/ki/my-submissions', [KiController::class, 'mySubmissions'])->name('ki.my-submissions')->middleware('auth');
+
+Route::middleware(['auth'])->prefix('ki')->name('ki.')->group(function () {
+    Route::get('/{id}/edit', [KiController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [KiController::class, 'update'])->name('update');
+    Route::delete('/{id}', [KiController::class, 'destroy'])->name('destroy');
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');

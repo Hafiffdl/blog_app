@@ -6,8 +6,10 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
+use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\PostController as UserPostController;
+use App\Http\Controllers\User\FaqController as UserFaqController;
 use App\Http\Controllers\KiController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -45,6 +47,13 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::post('/{post}/approve', [AdminPostController::class, 'approve'])->name('admin.posts.approve');
         Route::post('/{post}/reject', [AdminPostController::class, 'reject'])->name('admin.posts.reject');
     });
+
+    Route::prefix('faqs')->group(function () {
+        Route::get('/', [AdminFaqController::class, 'index'])->name('admin.faqs.index');
+        Route::post('/', [AdminFaqController::class, 'store'])->name('admin.faqs.store');
+        Route::put('/{id}', [AdminFaqController::class, 'update'])->name('admin.faqs.update');
+        Route::delete('/{id}', [AdminFaqController::class, 'destroy'])->name('admin.faqs.destroy');
+    });
 });
 
 Route::prefix('user')->middleware(['auth', 'user'])->group(function () {
@@ -58,4 +67,6 @@ Route::prefix('user')->middleware(['auth', 'user'])->group(function () {
         'update' => 'user.posts.update',
         'destroy' => 'user.posts.destroy',
     ]);
+
+    Route::get('/faqs', [UserFaqController::class, 'index'])->name('user.faqs.index');
 });

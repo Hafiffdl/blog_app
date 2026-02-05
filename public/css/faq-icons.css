@@ -1,0 +1,18 @@
+/* FAQ Icon Styles */
+.faq-icon {
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #28c76f 0%, #1e9f5a 100%);
+    color: white;
+    border-radius: 50%;
+    margin-right: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: bold;
+}
+
+.faq-icon.answer-icon {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}

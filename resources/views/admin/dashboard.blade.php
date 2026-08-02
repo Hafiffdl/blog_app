@@ -2,119 +2,111 @@
 
 @section('title', 'Dashboard')
 @section('page-title', 'Dashboard')
-@section('page-description', 'Admin')
-
-@section('breadcrumb')
-    <li class="active">Dashboard</li>
-@endsection
+@section('page-description', 'Ringkasan aktivitas konten')
 
 @section('content')
-    <!-- Info boxes -->
-    <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-aqua"><i class="fa fa-newspaper-o"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Total Posts</span>
-                    <span class="info-box-number">{{ $totalPosts }}</span>
-                </div>
+    {{-- Kartu statistik --}}
+    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div class="card flex items-center gap-4 p-5">
+            <span class="grid h-12 w-12 place-items-center rounded-xl bg-primary-50 text-primary-600">
+                <i class="bi bi-file-earmark-text text-xl"></i>
+            </span>
+            <div>
+                <p class="text-2xl font-bold text-slate-900">{{ number_format($totalPosts) }}</p>
+                <p class="text-sm text-slate-500">Total Posts</p>
             </div>
         </div>
 
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-yellow"><i class="fa fa-clock-o"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Pending Posts</span>
-                    <span class="info-box-number">{{ $pendingPosts }}</span>
-                </div>
+        <div class="card flex items-center gap-4 p-5">
+            <span class="grid h-12 w-12 place-items-center rounded-xl bg-amber-50 text-amber-600">
+                <i class="bi bi-clock-history text-xl"></i>
+            </span>
+            <div>
+                <p class="text-2xl font-bold text-slate-900">{{ number_format($pendingPosts) }}</p>
+                <p class="text-sm text-slate-500">Menunggu Review</p>
             </div>
         </div>
 
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="fa fa-check"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Approved Posts</span>
-                    <span class="info-box-number">{{ $approvedPosts }}</span>
-                </div>
+        <div class="card flex items-center gap-4 p-5">
+            <span class="grid h-12 w-12 place-items-center rounded-xl bg-emerald-50 text-emerald-600">
+                <i class="bi bi-check-circle text-xl"></i>
+            </span>
+            <div>
+                <p class="text-2xl font-bold text-slate-900">{{ number_format($approvedPosts) }}</p>
+                <p class="text-sm text-slate-500">Telah Disetujui</p>
             </div>
         </div>
 
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-red"><i class="fa fa-users"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Total Users</span>
-                    <span class="info-box-number">{{ $totalUsers }}</span>
-                </div>
+        <div class="card flex items-center gap-4 p-5">
+            <span class="grid h-12 w-12 place-items-center rounded-xl bg-sky-50 text-sky-600">
+                <i class="bi bi-people text-xl"></i>
+            </span>
+            <div>
+                <p class="text-2xl font-bold text-slate-900">{{ number_format($totalUsers) }}</p>
+                <p class="text-sm text-slate-500">Total Pengguna</p>
             </div>
         </div>
     </div>
 
-    <!-- Recent Posts -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Recent Posts</h3>
-                    <div class="box-tools pull-right">
-                        <a href="{{ route('admin.posts.index') }}" class="btn btn-sm btn-primary">
-                            <i class="fa fa-eye"></i> View All
-                        </a>
-                    </div>
-                </div>
-                <div class="box-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Author</th>
-                                    <th>Status</th>
-                                    <th>Created</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($recentPosts as $post)
-                                    <tr>
-                                        <td>{{ Str::limit($post->title, 50) }}</td>
-                                        <td>{{ $post->user->name }}</td>
-                                        <td>
-                                            @if($post->status === 'pending')
-                                                <span class="label label-warning">Pending</span>
-                                            @elseif($post->status === 'approved')
-                                                <span class="label label-success">Approved</span>
-                                            @else
-                                                <span class="label label-danger">Rejected</span>
-                                            @endif
-                                        </td>
-                                        <td>{{ $post->created_at->format('M d, Y') }}</td>
-                                        <td>
-                                            <a href="{{ route('admin.posts.show', $post) }}" class="btn btn-xs btn-info">
-                                                <i class="fa fa-eye"></i>
-                                            </a>
-                                            @if($post->status === 'pending')
-                                                <form method="POST" action="{{ route('admin.posts.approve', $post) }}" style="display:inline;">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-xs btn-success">
-                                                        <i class="fa fa-check"></i>
-                                                    </button>
-                                                </form>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center">No posts found.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+    {{-- Postingan terbaru --}}
+    <div class="card mt-6">
+        <div class="card-header">
+            <h3 class="text-base font-bold text-slate-900">Postingan Terbaru</h3>
+            <a href="{{ route('admin.posts.index') }}" class="btn-outline btn-sm">
+                Lihat Semua <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+        <div class="table-wrapper">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Judul</th>
+                        <th>Penulis</th>
+                        <th>Status</th>
+                        <th>Dibuat</th>
+                        <th class="text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($recentPosts as $post)
+                        <tr>
+                            <td class="max-w-xs">
+                                <span class="block truncate font-medium text-slate-900">{{ $post->title }}</span>
+                            </td>
+                            <td class="text-slate-600">{{ $post->user->name }}</td>
+                            <td>
+                                @if($post->status === 'pending')
+                                    <span class="badge-pending"><i class="bi bi-clock"></i> Pending</span>
+                                @elseif($post->status === 'approved')
+                                    <span class="badge-approved"><i class="bi bi-check-circle"></i> Approved</span>
+                                @else
+                                    <span class="badge-rejected"><i class="bi bi-x-circle"></i> Rejected</span>
+                                @endif
+                            </td>
+                            <td class="text-slate-500">{{ $post->created_at->format('d M Y') }}</td>
+                            <td>
+                                <div class="flex justify-end gap-2">
+                                    <a href="{{ route('admin.posts.show', $post) }}" class="btn-outline btn-sm" title="Lihat">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    @if($post->status === 'pending')
+                                        <form method="POST" action="{{ route('admin.posts.approve', $post) }}">
+                                            @csrf
+                                            <button type="submit" class="btn-success btn-sm" title="Setujui">
+                                                <i class="bi bi-check-lg"></i>
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="py-10 text-center text-slate-500">Belum ada postingan.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 @endsection

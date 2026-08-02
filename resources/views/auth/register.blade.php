@@ -1,65 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Blog App</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-    <div class="container">
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-5">
-                <div class="card shadow">
-                    <div class="card-body p-5">
-                        <h3 class="text-center mb-4">Register</h3>
-                        
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                @foreach ($errors->all() as $error)
-                                    <div>{{ $error }}</div>
-                                @endforeach
-                            </div>
-                        @endif
+@extends('layouts.auth')
 
-                        <form method="POST" action="{{ route('register') }}">
-                            @csrf
-                            
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" 
-                                       value="{{ old('name') }}" required autofocus>
-                            </div>
+@section('title', 'Daftar - BlogApp')
 
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" 
-                                       value="{{ old('email') }}" required>
-                            </div>
+@section('content')
+    <h2 class="text-2xl font-bold text-slate-900">Buat akun baru</h2>
+    <p class="mt-1 text-sm text-slate-500">Mulai berbagi cerita dan ide kamu bersama kami.</p>
 
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" 
-                                       name="password" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="password_confirmation" class="form-label">Confirm Password</label>
-                                <input type="password" class="form-control" id="password_confirmation" 
-                                       name="password_confirmation" required>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary w-100">Register</button>
-                        </form>
-
-                        <div class="text-center mt-3">
-                            <p>Already have an account? <a href="{{ route('login') }}">Login here</a></p>
-                            <a href="{{ route('home') }}" class="text-decoration-none">Back to Home</a>
-                        </div>
-                    </div>
-                </div>
+    @if($errors->any())
+        <div class="mt-4 flex items-start gap-3 rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800">
+            <i class="bi bi-exclamation-circle-fill mt-0.5 text-rose-500"></i>
+            <div class="flex-1">
+                @foreach($errors->all() as $error)
+                    <p>{{ $error }}</p>
+                @endforeach
             </div>
         </div>
-    </div>
-</body>
-</html>
+    @endif
+
+    <form method="POST" action="{{ route('register') }}" class="mt-6 space-y-5">
+        @csrf
+        <div>
+            <label for="name" class="form-label">Nama Lengkap</label>
+            <div class="input-icon">
+                <i class="bi bi-person"></i>
+                <input type="text" class="form-control" id="name" name="name"
+                       value="{{ old('name') }}" placeholder="Nama kamu" required autofocus>
+            </div>
+        </div>
+
+        <div>
+            <label for="email" class="form-label">Email</label>
+            <div class="input-icon">
+                <i class="bi bi-envelope"></i>
+                <input type="email" class="form-control" id="email" name="email"
+                       value="{{ old('email') }}" placeholder="nama@contoh.com" required>
+            </div>
+        </div>
+
+        <div>
+            <label for="password" class="form-label">Kata Sandi</label>
+            <div class="input-icon">
+                <i class="bi bi-lock"></i>
+                <input type="password" class="form-control" id="password"
+                       name="password" placeholder="Minimal 8 karakter" required>
+            </div>
+        </div>
+
+        <div>
+            <label for="password_confirmation" class="form-label">Ulangi Kata Sandi</label>
+            <div class="input-icon">
+                <i class="bi bi-lock-fill"></i>
+                <input type="password" class="form-control" id="password_confirmation"
+                       name="password_confirmation" placeholder="Ulangi kata sandi" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-primary w-full py-2.5">
+            <i class="bi bi-person-plus"></i> Daftar
+        </button>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-slate-500">
+        Sudah punya akun?
+        <a href="{{ route('login') }}" class="font-semibold text-primary-600 hover:text-primary-700">Masuk di sini</a>
+    </p>
+@endsection

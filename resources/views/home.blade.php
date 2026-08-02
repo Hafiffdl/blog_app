@@ -1,372 +1,165 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #2563eb;
-            --secondary-color: #1e40af;
-            --dark-color: #1e293b;
-            --light-color: #f8fafc;
-            --border-color: #e2e8f0;
-        }
+@extends('layouts.app')
 
-        * {
-            font-family: 'Inter', sans-serif;
-        }
+@section('title', 'BlogApp - Beranda')
 
-        body {
-            background-color: var(--light-color);
-            color: var(--dark-color);
-        }
-
-        .navbar {
-            background: white;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            padding: 1rem 0;
-        }
-
-        .navbar-brand {
-            font-weight: 900;
-            font-size: 1.5rem;
-            color: var(--primary-color) !important;
-        }
-
-        .nav-link {
-            font-weight: 500;
-            color: var(--dark-color) !important;
-            margin: 0 0.5rem;
-            transition: color 0.3s;
-        }
-
-        .nav-link:hover {
-            color: var(--primary-color) !important;
-        }
-
-        .btn-primary {
-            background: var(--primary-color);
-            border: none;
-            padding: 0.5rem 1.5rem;
-            font-weight: 600;
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-
-        .btn-primary:hover {
-            background: var(--secondary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-        }
-
-        .btn-outline-primary {
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-            padding: 0.5rem 1.5rem;
-            font-weight: 600;
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-
-        .btn-outline-primary:hover {
-            background: var(--primary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-        }
-
-        .hero-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 5rem 0;
-            margin-bottom: 3rem;
-        }
-
-        .hero-section h1 {
-            font-weight: 900;
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .hero-section p {
-            font-size: 1.25rem;
-            opacity: 0.9;
-        }
-
-        .blog-card {
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.3s;
-            border: 1px solid var(--border-color);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .blog-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
-        }
-
-        .blog-card-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 3rem;
-        }
-
-        .blog-card-body {
-            padding: 1.5rem;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .blog-card-title {
-            font-weight: 700;
-            font-size: 1.25rem;
-            margin-bottom: 0.75rem;
-            color: var(--dark-color);
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .blog-card-excerpt {
-            color: #64748b;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            flex: 1;
-        }
-
-        .blog-card-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-color);
-            font-size: 0.85rem;
-            color: #94a3b8;
-        }
-
-        .blog-card-author {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .author-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-        }
-
-        .empty-state i {
-            font-size: 4rem;
-            color: #cbd5e1;
-            margin-bottom: 1rem;
-        }
-
-        .empty-state h3 {
-            color: var(--dark-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .empty-state p {
-            color: #64748b;
-        }
-
-        .pagination {
-            margin-top: 3rem;
-        }
-
-        .page-link {
-            color: var(--primary-color);
-            border: 1px solid var(--border-color);
-            padding: 0.5rem 1rem;
-            margin: 0 0.25rem;
-            border-radius: 8px;
-            font-weight: 500;
-        }
-
-        .page-link:hover {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-
-        .page-item.active .page-link {
-            background: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-
-        .footer {
-            background: white;
-            border-top: 1px solid var(--border-color);
-            padding: 2rem 0;
-            margin-top: 4rem;
-        }
-
-        @media (max-width: 768px) {
-            .hero-section h1 {
-                font-size: 2.5rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="{{ route('home') }}">
-                <i class="fas fa-blog"></i> BlogApp
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home') }}">Home</a>
-                    </li>
-                    @auth
-                        @if(auth()->user()->role === 'admin')
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.dashboard') }}">
-                                    <i class="fas fa-tachometer-alt"></i> Dashboard
-                                </a>
-                            </li>
-                        @else
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('user.dashboard') }}">
-                                    <i class="fas fa-tachometer-alt"></i> Dashboard
-                                </a>
-                            </li>
-                        @endif
-                        <li class="nav-item ms-2">
-                            <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                                @csrf
-                                <button type="submit" class="btn btn-outline-primary btn-sm">
-                                    <i class="fas fa-sign-out-alt"></i> Logout
-                                </button>
-                            </form>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">Login</a>
-                        </li>
-                        <li class="nav-item ms-2">
-                            <a class="btn btn-primary btn-sm" href="{{ route('register') }}">
-                                Get Started
-                            </a>
-                        </li>
-                    @endauth
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <section class="hero-section">
-        <div class="container text-center">
-            <h1>Welcome to BlogApp</h1>
-            <p class="lead">Discover amazing stories and share your thoughts with the world</p>
-            @guest
-                <div class="mt-4">
-                    <a href="{{ route('register') }}" class="btn btn-light btn-lg me-2">
-                        <i class="fas fa-rocket"></i> Start Writing
+@section('content')
+    {{-- Hero --}}
+    <section class="relative overflow-hidden bg-gradient-to-br from-primary-700 via-primary-600 to-indigo-500">
+        <div class="absolute -right-24 -top-24 h-96 w-96 rounded-full bg-white/10 blur-2xl"></div>
+        <div class="absolute -bottom-32 -left-16 h-96 w-96 rounded-full bg-white/10 blur-2xl"></div>
+        <div class="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+            <div class="max-w-3xl">
+                <span class="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 text-xs font-semibold text-white backdrop-blur">
+                    <i class="bi bi-stars"></i> Tempat berbagi cerita terbaik
+                </span>
+                <h1 class="mt-6 text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">
+                    Tulis, bagikan, dan<br class="hidden sm:block"> inspirasi banyak orang.
+                </h1>
+                <p class="mt-5 max-w-2xl text-lg text-white/80">
+                    Jelajahi artikel menarik dari komunitas kami dan bagikan pemikiranmu kepada dunia. Semua konten melewati moderasi agar tetap berkualitas.
+                </p>
+                <div class="mt-8 flex flex-wrap gap-3">
+                    <a href="#posts" class="btn bg-white text-primary-700 hover:bg-slate-100 focus:ring-white">
+                        <i class="bi bi-journal-text"></i> Jelajahi Artikel
                     </a>
-                    <a href="#posts" class="btn btn-outline-light btn-lg">
-                        <i class="fas fa-book-open"></i> Explore Posts
-                    </a>
+                    @guest
+                        <a href="{{ route('register') }}" class="btn bg-white/10 text-white ring-1 ring-inset ring-white/30 backdrop-blur hover:bg-white/20 focus:ring-white">
+                            <i class="bi bi-pencil-square"></i> Mulai Menulis
+                        </a>
+                    @endguest
                 </div>
-            @endguest
+            </div>
         </div>
     </section>
 
-    <div class="container" id="posts">
-        <div class="row mb-4">
-            <div class="col-12">
-                <h2 class="fw-bold">Latest Posts</h2>
-                <p class="text-muted">Read the most recent approved posts from our community</p>
+    {{-- Statistik / fitur --}}
+    <section class="mx-auto -mt-8 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid gap-4 sm:grid-cols-3">
+            <div class="card flex items-center gap-4 p-5">
+                <span class="grid h-12 w-12 place-items-center rounded-xl bg-primary-50 text-primary-600">
+                    <i class="bi bi-journal-text text-xl"></i>
+                </span>
+                <div>
+                    <p class="text-2xl font-bold text-slate-900">{{ number_format(\App\Models\Post::approved()->count()) }}</p>
+                    <p class="text-sm text-slate-500">Artikel terbit</p>
+                </div>
             </div>
+            <div class="card flex items-center gap-4 p-5">
+                <span class="grid h-12 w-12 place-items-center rounded-xl bg-emerald-50 text-emerald-600">
+                    <i class="bi bi-people text-xl"></i>
+                </span>
+                <div>
+                    <p class="text-2xl font-bold text-slate-900">{{ number_format(\App\Models\User::count()) }}</p>
+                    <p class="text-sm text-slate-500">Penulis aktif</p>
+                </div>
+            </div>
+            <div class="card flex items-center gap-4 p-5">
+                <span class="grid h-12 w-12 place-items-center rounded-xl bg-amber-50 text-amber-600">
+                    <i class="bi bi-award text-xl"></i>
+                </span>
+                <div>
+                    <p class="text-2xl font-bold text-slate-900">100%</p>
+                    <p class="text-sm text-slate-500">Konten termoderasi</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- Daftar artikel --}}
+    <section id="posts" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">Artikel Terbaru</h2>
+                <p class="mt-1 text-slate-500">Kumpulan tulisan terbaik dari para penulis kami.</p>
+            </div>
+            <a href="{{ route('ki.index') }}" class="btn-outline btn-sm">
+                <i class="bi bi-award"></i> Pengajuan Kekayaan Intelektual
+            </a>
         </div>
 
         @if($posts->count() > 0)
-            <div class="row g-4">
+            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 @foreach($posts as $post)
-                    <div class="col-lg-4 col-md-6">
-                        <article class="blog-card">
-                            <div class="blog-card-header">
-                                <i class="fas fa-newspaper"></i>
-                            </div>
-                            <div class="blog-card-body">
-                                <h3 class="blog-card-title">{{ $post->title }}</h3>
-                                <p class="blog-card-excerpt">{{ Str::limit($post->content, 150) }}</p>
-                                <div class="blog-card-meta">
-                                    <div class="blog-card-author">
-                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($post->user->name) }}&background=667eea&color=fff" 
-                                             alt="{{ $post->user->name }}" class="author-avatar">
-                                        <span>{{ $post->user->name }}</span>
-                                    </div>
-                                    <span>
-                                        <i class="far fa-calendar"></i> {{ $post->created_at->format('M d, Y') }}
+                    <article class="card group flex flex-col overflow-hidden transition-shadow hover:shadow-lg">
+                        <div class="flex h-44 items-center justify-center bg-gradient-to-br from-primary-500 to-indigo-600 text-5xl text-white/90">
+                            <i class="bi bi-newspaper"></i>
+                        </div>
+                        <div class="flex flex-1 flex-col p-6">
+                            <h3 class="text-lg font-bold text-slate-900 transition-colors group-hover:text-primary-600 line-clamp-2">
+                                <a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a>
+                            </h3>
+                            <p class="mt-2 flex-1 text-sm leading-relaxed text-slate-500 line-clamp-3">
+                                {{ Str::limit(strip_tags($post->content), 150) }}
+                            </p>
+                            <div class="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
+                                <div class="flex items-center gap-2.5">
+                                    <span class="grid h-8 w-8 place-items-center rounded-full bg-primary-100 text-xs font-bold text-primary-700">
+                                        {{ strtoupper(substr($post->user->name, 0, 1)) }}
                                     </span>
+                                    <div class="leading-tight">
+                                        <p class="text-xs font-semibold text-slate-700">{{ $post->user->name }}</p>
+                                        <p class="text-xs text-slate-400">{{ $post->created_at->format('d M Y') }}</p>
+                                    </div>
                                 </div>
-                                <a href="{{ route('posts.show', $post) }}" class="btn btn-primary w-100 mt-3">
-                                    Read More <i class="fas fa-arrow-right ms-1"></i>
+                                <a href="{{ route('posts.show', $post) }}" class="text-sm font-semibold text-primary-600 hover:text-primary-700">
+                                    Baca <i class="bi bi-arrow-right"></i>
                                 </a>
                             </div>
-                        </article>
-                    </div>
+                        </div>
+                    </article>
                 @endforeach
             </div>
 
-            <div class="d-flex justify-content-center">
+            <div class="mt-10 flex justify-center">
                 {{ $posts->links() }}
             </div>
         @else
-            <div class="empty-state">
-                <i class="fas fa-inbox"></i>
-                <h3>No Posts Yet</h3>
-                <p>Be the first to create a post!</p>
+            <div class="card flex flex-col items-center justify-center p-16 text-center">
+                <span class="grid h-16 w-16 place-items-center rounded-full bg-slate-100 text-3xl text-slate-400">
+                    <i class="bi bi-inbox"></i>
+                </span>
+                <h3 class="mt-4 text-lg font-bold text-slate-900">Belum Ada Artikel</h3>
+                <p class="mt-1 text-sm text-slate-500">Jadilah penulis pertama yang berbagi cerita!</p>
                 @auth
                     @if(auth()->user()->role === 'user')
-                        <a href="{{ route('user.posts.create') }}" class="btn btn-primary mt-3">
-                            <i class="fas fa-plus"></i> Create Your First Post
+                        <a href="{{ route('user.posts.create') }}" class="btn-primary mt-5">
+                            <i class="bi bi-plus-lg"></i> Tulis Artikel Pertama
                         </a>
                     @endif
                 @else
-                    <a href="{{ route('register') }}" class="btn btn-primary mt-3">
-                        <i class="fas fa-user-plus"></i> Register to Start Writing
+                    <a href="{{ route('register') }}" class="btn-primary mt-5">
+                        <i class="bi bi-person-plus"></i> Daftar untuk Menulis
                     </a>
                 @endauth
             </div>
         @endif
-    </div>
+    </section>
 
-    <footer class="footer">
-        <div class="container text-center">
-            <p class="mb-0 text-muted">&copy; {{ date('Y') }} BlogApp. All rights reserved.</p>
+    {{-- CTA --}}
+    <section class="mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
+        <div class="relative overflow-hidden rounded-2xl bg-slate-900 p-10 text-center sm:p-16">
+            <div class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary-600/30 blur-3xl"></div>
+            <div class="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-indigo-600/30 blur-3xl"></div>
+            <div class="relative">
+                <h2 class="text-2xl font-bold text-white sm:text-3xl">Siap berbagi ceritamu?</h2>
+                <p class="mx-auto mt-3 max-w-xl text-slate-400">
+                    Bergabunglah dengan komunitas penulis kami dan mulai inspirasi ribuan pembaca hari ini.
+                </p>
+                <div class="mt-6 flex flex-wrap justify-center gap-3">
+                    @guest
+                        <a href="{{ route('register') }}" class="btn bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500">
+                            <i class="bi bi-rocket-takeoff"></i> Daftar Gratis
+                        </a>
+                    @else
+                        <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('user.dashboard') }}" class="btn bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500">
+                            <i class="bi bi-speedometer2"></i> Buka Dashboard
+                        </a>
+                    @endauth
+                    <a href="{{ route('ki.index') }}" class="btn bg-white/10 text-white ring-1 ring-inset ring-white/30 backdrop-blur hover:bg-white/20">
+                        <i class="bi bi-award"></i> Daftarkan KI
+                    </a>
+                </div>
+            </div>
         </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    </section>
+@endsection

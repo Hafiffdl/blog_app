@@ -1,173 +1,144 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>@yield('title') - User Panel</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    
-    <!-- Bootstrap 3.3.7 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- AdminLTE -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.18/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.18/css/skins/_all-skins.min.css">
-    
-    <!-- Google Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@yield('title', 'Dashboard') - User Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @stack('styles')
 </head>
-<body class="hold-transition skin-green sidebar-mini">
-<div class="wrapper">
-
-    <!-- Main Header -->
-    <header class="main-header">
-        <!-- Logo -->
-        <a href="{{ route('user.dashboard') }}" class="logo">
-            <span class="logo-mini"><b>U</b>P</span>
-            <span class="logo-lg"><b>User</b>Panel</span>
-        </a>
-
-        <!-- Header Navbar -->
-        <nav class="navbar navbar-static-top" role="navigation">
-            <!-- Sidebar toggle button-->
-            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-                <span class="sr-only">Toggle navigation</span>
-            </a>
-            
-            <!-- Navbar Right Menu -->
-            <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
-                    <!-- User Account Menu -->
-                    <li class="dropdown user user-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="https://ui-avatars.com/api/?name={{ auth()->user()->name }}&background=00a65a&color=fff" class="user-image" alt="User Image">
-                            <span class="hidden-xs">{{ auth()->user()->name }}</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <!-- User image -->
-                            <li class="user-header">
-                                <img src="https://ui-avatars.com/api/?name={{ auth()->user()->name }}&background=00a65a&color=fff&size=160" class="img-circle" alt="User Image">
-                                <p>
-                                    {{ auth()->user()->name }}
-                                    <small>Member since {{ auth()->user()->created_at->format('M Y') }}</small>
-                                </p>
-                            </li>
-                            <!-- Menu Footer-->
-                            <li class="user-footer">
-                                <div class="pull-right">
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button type="submit" class="btn btn-default btn-flat">Sign out</button>
-                                    </form>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
-
-    <!-- Left side column -->
-    <aside class="main-sidebar">
-        <section class="sidebar">
-            <!-- Sidebar user panel -->
-            <div class="user-panel">
-                <div class="pull-left image">
-                    <img src="https://ui-avatars.com/api/?name={{ auth()->user()->name }}&background=00a65a&color=fff" class="img-circle" alt="User Image">
+<body>
+    <div class="flex min-h-screen">
+        {{-- Sidebar --}}
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 -translate-x-full bg-slate-900 transition-transform duration-200 lg:translate-x-0 lg:static lg:shrink-0">
+            <div class="flex h-full flex-col">
+                <div class="flex h-16 items-center gap-3 border-b border-slate-800 px-6">
+                    <span class="grid h-9 w-9 place-items-center rounded-lg bg-emerald-600 text-white">
+                        <i class="bi bi-person-badge"></i>
+                    </span>
+                    <div>
+                        <p class="text-sm font-bold text-white">User Panel</p>
+                        <p class="text-xs text-slate-400">Halo, {{ auth()->user()->name }}</p>
+                    </div>
                 </div>
-                <div class="pull-left info">
-                    <p>{{ auth()->user()->name }}</p>
-                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-                </div>
-            </div>
 
-            <!-- Sidebar Menu -->
-            <ul class="sidebar-menu" data-widget="tree">
-                <li class="header">MAIN NAVIGATION</li>
-                
-                <li class="{{ request()->routeIs('user.dashboard') ? 'active' : '' }}">
-                    <a href="{{ route('user.dashboard') }}">
-                        <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                <nav class="flex-1 space-y-1 overflow-y-auto p-4">
+                    <p class="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-500">Menu</p>
+
+                    <a href="{{ route('user.dashboard') }}" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium {{ request()->routeIs('user.dashboard') ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="bi bi-speedometer2 w-5 text-center"></i> Dashboard
                     </a>
-                </li>
-                
-                <li class="{{ request()->routeIs('user.posts.*') ? 'active' : '' }}">
-                    <a href="{{ route('user.posts.index') }}">
-                        <i class="fa fa-newspaper-o"></i> <span>My Posts</span>
-                        <span class="pull-right-container">
-                            <small class="label pull-right bg-yellow">{{ auth()->user()->posts()->pending()->count() }}</small>
+
+                    <a href="{{ route('user.posts.index') }}" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium {{ request()->routeIs('user.posts.*') ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="bi bi-file-earmark-text w-5 text-center"></i> Postingan Saya
+                    </a>
+
+                    <a href="{{ route('user.posts.create') }}" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium {{ request()->routeIs('user.posts.create') ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="bi bi-plus-circle w-5 text-center"></i> Buat Postingan
+                    </a>
+
+                    <a href="{{ route('user.faqs.index') }}" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium {{ request()->routeIs('user.faqs.*') ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="bi bi-question-circle w-5 text-center"></i> FAQ
+                    </a>
+                </nav>
+
+                <div class="border-t border-slate-800 p-4">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+                            <i class="bi bi-box-arrow-right w-5 text-center"></i> Keluar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </aside>
+
+        {{-- Overlay untuk mobile --}}
+        <div id="sidebar-overlay" class="fixed inset-0 z-40 hidden bg-black/50"></div>
+
+        {{-- Konten utama --}}
+        <div class="flex min-h-screen flex-1 flex-col">
+            {{-- Topbar --}}
+            <header class="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white/90 px-4 backdrop-blur sm:px-6">
+                <div class="flex items-center gap-3">
+                    <button id="sidebar-toggle" class="btn-outline btn-sm lg:hidden">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <div>
+                        <h1 class="text-base font-bold text-slate-900">@yield('page-title', 'Dashboard')</h1>
+                        <p class="hidden text-xs text-slate-500 sm:block">@yield('page-description', 'Halaman user')</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <a href="{{ route('home') }}" target="_blank" class="btn-outline btn-sm hidden sm:inline-flex">
+                        <i class="bi bi-box-arrow-up-right"></i> Lihat Website
+                    </a>
+                    <div class="flex items-center gap-2.5 rounded-full border border-slate-200 bg-white py-1.5 pl-1.5 pr-4">
+                        <span class="grid h-8 w-8 place-items-center rounded-full bg-emerald-600 text-xs font-bold text-white">
+                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                         </span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{ route('user.posts.create') }}">
-                        <i class="fa fa-plus"></i> <span>Create Post</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{ route('home') }}" target="_blank">
-                        <i class="fa fa-external-link"></i> <span>View Website</span>
-                    </a>
-                </li>
-            </ul>
-        </section>
-    </aside>
-
-    <!-- Content Wrapper -->
-    <div class="content-wrapper">
-        <!-- Content Header -->
-        <section class="content-header">
-            <h1>
-                @yield('page-title', 'Dashboard')
-                <small>@yield('page-description', 'Control panel')</small>
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="{{ route('user.dashboard') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                @yield('breadcrumb')
-            </ol>
-        </section>
-
-        <!-- Main content -->
-        <section class="content">
-            @if(session('success'))
-                <div class="alert alert-success alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <i class="icon fa fa-check"></i> {{ session('success') }}
+                        <div class="leading-tight">
+                            <p class="text-sm font-semibold text-slate-800">{{ auth()->user()->name }}</p>
+                            <p class="text-xs text-slate-500">Member</p>
+                        </div>
+                    </div>
                 </div>
-            @endif
+            </header>
 
-            @if(session('error'))
-                <div class="alert alert-danger alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <i class="icon fa fa-ban"></i> {{ session('error') }}
-                </div>
-            @endif
+            {{-- Konten --}}
+            <main class="flex-1 p-4 sm:p-6 lg:p-8">
+                @if(session('success'))
+                    <div class="mb-5 flex items-start gap-3 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">
+                        <i class="bi bi-check-circle-fill mt-0.5 text-emerald-500"></i>
+                        <div class="flex-1">{{ session('success') }}</div>
+                        <button type="button" class="text-emerald-400 hover:text-emerald-600" onclick="this.parentElement.remove()">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                @endif
 
-            @yield('content')
-        </section>
+                @if(session('error'))
+                    <div class="mb-5 flex items-start gap-3 rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800">
+                        <i class="bi bi-exclamation-circle-fill mt-0.5 text-rose-500"></i>
+                        <div class="flex-1">{{ session('error') }}</div>
+                        <button type="button" class="text-rose-400 hover:text-rose-600" onclick="this.parentElement.remove()">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                @endif
+
+                @yield('content')
+            </main>
+        </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-        </div>
-        <strong>Copyright &copy; {{ date('Y') }} <a href="#">Blog App</a>.</strong> All rights reserved.
-    </footer>
-</div>
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const toggle = document.getElementById('sidebar-toggle');
 
-<!-- jQuery 3 -->
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!-- AdminLTE App -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.18/js/adminlte.min.js"></script>
+        if (toggle && sidebar && overlay) {
+            toggle.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                overlay.classList.toggle('hidden');
+            });
+            overlay.addEventListener('click', () => {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            });
+        }
 
-@stack('scripts')
+        document.querySelectorAll('[data-confirm]').forEach((form) => {
+            form.addEventListener('submit', (e) => {
+                if (!confirm(form.dataset.confirm)) e.preventDefault();
+            });
+        });
+    </script>
+    @stack('scripts')
 </body>
 </html>

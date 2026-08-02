@@ -1,58 +1,60 @@
 @extends('user.layout')
 
-@section('title', 'Create New Post')
-@section('page-title', 'Create New Post')
-@section('page-description', 'Write a new article')
-
-@section('breadcrumb')
-    <li><a href="{{ route('user.posts.index') }}">My Posts</a></li>
-    <li class="active">Create</li>
-@endsection
+@section('title', 'Buat Postingan')
+@section('page-title', 'Buat Postingan Baru')
+@section('page-description', 'Tulis artikel baru')
 
 @section('content')
-    <div class="box box-success">
-        <div class="box-header with-border">
-            <h3 class="box-title">Create New Post</h3>
-        </div>
-        
-        <form method="POST" action="{{ route('user.posts.store') }}">
-            @csrf
-            
-            <div class="box-body">
-                @if($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
+    <div class="mx-auto max-w-3xl">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-base font-bold text-slate-900">Buat Postingan Baru</h3>
+            </div>
+
+            <form method="POST" action="{{ route('user.posts.store') }}">
+                @csrf
+
+                <div class="card-body space-y-5">
+                    @if($errors->any())
+                        <div class="flex items-start gap-3 rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800">
+                            <i class="bi bi-exclamation-circle-fill mt-0.5 text-rose-500"></i>
+                            <div class="flex-1">
+                                <ul class="list-inside list-disc">
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    @endif
+
+                    <div>
+                        <label for="title" class="form-label">Judul</label>
+                        <input type="text" class="form-control" id="title" name="title"
+                               value="{{ old('title') }}" placeholder="Masukkan judul artikel" required>
                     </div>
-                @endif
 
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" class="form-control" id="title" name="title" 
-                           value="{{ old('title') }}" placeholder="Enter post title" required>
+                    <div>
+                        <label for="content" class="form-label">Konten</label>
+                        <textarea class="form-control" id="content" name="content"
+                                  rows="15" placeholder="Tulis konten kamu di sini..." required>{{ old('content') }}</textarea>
+                    </div>
+
+                    <div class="flex items-start gap-3 rounded-lg border border-sky-200 bg-sky-50 p-4 text-sm text-sky-800">
+                        <i class="bi bi-info-circle-fill mt-0.5 text-sky-500"></i>
+                        <p>Postingan kamu akan ditinjau oleh admin sebelum diterbitkan.</p>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="content">Content</label>
-                    <textarea class="form-control" id="content" name="content" 
-                              rows="15" placeholder="Write your content here..." required>{{ old('content') }}</textarea>
+                <div class="flex items-center justify-between gap-3 border-t border-slate-200 px-6 py-5">
+                    <a href="{{ route('user.posts.index') }}" class="btn-outline">
+                        Batal
+                    </a>
+                    <button type="submit" class="btn-primary">
+                        <i class="bi bi-send"></i> Kirim untuk Persetujuan
+                    </button>
                 </div>
-
-                <div class="callout callout-info">
-                    <h4><i class="fa fa-info"></i> Note:</h4>
-                    Your post will be submitted for admin approval before being published.
-                </div>
-            </div>
-
-            <div class="box-footer">
-                <a href="{{ route('user.posts.index') }}" class="btn btn-default">Cancel</a>
-                <button type="submit" class="btn btn-success pull-right">
-                    <i class="fa fa-check"></i> Submit for Approval
-                </button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 @endsection
